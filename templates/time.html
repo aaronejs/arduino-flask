@@ -6,6 +6,16 @@
 </head>
 <body>
     <div class='main'>
+        {% if statistics_calc == [] %}
+        <p>Hello, world!</p>
+        {% else %}
+            <ul>
+                <li>Measurement : Time</li>
+                {% for i in statistics_calc %}
+                    <li>{{i}} &nbsp;:</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
         {% if statistics == [] %}
         <p>Hello, world!</p>
         {% else %}
