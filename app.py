@@ -65,12 +65,12 @@ def CalcMin(type : str):
 
 @app.route("/")
 def main():
-    rows = 3
-    now = dt.now().strftime('%H:%M:%S')
+    rows = 6
+    now = dt.now().strftime('%d/%m/%Y %H:%M:%S')
     board.set_pin_mode_analog_input(LDRPIN, differential = 10, callback = LDRMeasure)
     board.set_pin_mode_dht(DHTPIN, sensor_type=11, differential=.05, callback = Measure)
 
-    if len(statistics) < rows+1:
+    if len(statistics) <= rows:
         if temperature > 0 and humidity > 0 and light > 0:
 
             statistics.append({ "time" : now, "temperature" : temperature, "humidity" : humidity, "light" : light})
@@ -81,4 +81,4 @@ def main():
             if len(statistics) > rows:
                 del statistics[0]
 
-    return render_template('time.html', statistics = statistics, statistics_calc = statistics_calc)
+    return render_template('index.html', statistics = statistics, statistics_calc = statistics_calc)

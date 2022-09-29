@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="refresh" content="5">
+    <link rel="stylesheet" href="../static/css/main.css">
+</head>
+<body>
+    <div class='main'>
+        <div class='row'>
+            <div class='data'>
+                {% if statistics_calc == [] %}
+                <p>Hello, world!</p>
+                {% else %}
+                    <table>
+                        <tr>
+                            <th>
+                                Field
+                            </th>
+                            <th>
+                                Temperature(&deg;C)
+                            </th>
+                            <th>
+                                Humidity(%)
+                            </th>
+                            <th>
+                                Light(W/m&#178;)
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                Maximum
+                            </th>
+                            {% for i in statistics_calc %}
+                                {% for key, value in i.items() %}
+                                    {% if "max" in key %}
+                                        <td> {{value}}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <th>
+                                Average
+                            </th>
+                            {% for i in statistics_calc %}
+                                {% for key, value in i.items() %}
+                                    {% if "avg" in key %}
+                                        <td> {{value}}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <th>
+                                Minimum
+                            </th>
+                            {% for i in statistics_calc %}
+                                {% for key, value in i.items() %}
+                                    {% if "min" in key %}
+                                        <td> {{value}}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </tr>
+                    </table>
+                {% endif %}
+            </div>
+            <div class='data'>
+                {% if statistics == [] %}
+                <p>Hold on, retrieving data from the sensors!</p>
+                {% else %}
+                    <ul>
+                        <li>Latest data:</li>
+                        {% for key, value in statistics[-1].items() %}
+                            <li><b>{{key}}</b>&nbsp;:&nbsp;{{value}}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+        <div class='row'>
+            <div class='live-data'>
+                {% if statistics == [] %}
+                <p>Hold on, retrieving data from the sensors!</p>
+                {% else %}
+                    <ul>
+                        <li>Data stream:</li>
+                        {% for i in statistics%}
+                            <li>
+                                {% for key, value in i.items() %}
+                                    <b>{{key}}</b>&nbsp;:&nbsp;{{value}}&nbsp;
+                                {% endfor %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>        
+    </div>
+</body>
+</html>
