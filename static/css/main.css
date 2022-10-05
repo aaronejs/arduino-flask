@@ -51,6 +51,7 @@ body{
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    padding: .2em;
 }
 
 .data li:first, .data-stream li:first{
