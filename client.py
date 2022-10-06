@@ -4,7 +4,7 @@ import requests
 import random as r
 import csv
 
-fieldnames = ['time', 'temperature','humidity','light']
+fieldnames = ['sensor_id', 'time', 'temperature','humidity','light']
 board = CustomPymata4(com_port = "COM8")
 DHTPIN = 12
 LDRPIN = 2
@@ -32,7 +32,7 @@ def writeCSV(maxLines : int):
     if temperature == 0:
         writeCSV(maxLines)
     else:
-        data = {'time':getCurTime(), 'temperature':temperature, 'humidity':humidity, 'light':light}
+        data = {'sensor_id': 1337, 'time':getCurTime(), 'temperature':temperature, 'humidity':humidity, 'light':light}
 
         with open('data.csv') as f:
             rows = sum(1 for line in f)
@@ -43,14 +43,14 @@ def writeCSV(maxLines : int):
 
     return data
 
-def sendData():
+def sendData(url : str):
     result = writeCSV(32)
-    data = { 'sent_time': result['time'], 'sent_temp': result['temperature'],
-             'sent_humidity':result['humidity'], 'sent_light':result['light'] }
-    response = requests.post('http://localhost:5000/post_data', json = data)
+    data = { 'sensor_id': result['sensor_id'], 'sent_time': result['time'], 'sent_temp': result['temperature'],
+             'sent_humidity': result['humidity'], 'sent_light': result['light'] }
+    response = requests.post(f'http://{url}/post_data', json = data)
 
-def getAvg():
-    response = requests.get('http://localhost:5000/average')
+def getAvg(url : str):
+    response = requests.get(f'http://{url}/average')
     data = response.json()
 
     if data == {}:
@@ -63,11 +63,17 @@ def getAvg():
 
 setup()
 while True:
+    url = input("Please enter the IP address of the Flask server: ")
     inpt = input('S-send data, G-get average, Q-quit\n')
 
+    if not url:
+        url = "http://localhost:5000"
+    else: 
+        url = url + ":5000"
+
     if inpt in 'sS':
-        sendData()
+        sendData(url)
     elif inpt in 'gG':
-        getAvg()
+        getAvg(url)
     else:
         break
