@@ -6,7 +6,65 @@
 </head>
 <body>
     <div class='main'>
-        <div class='row'>
+        <div class='row'> 
+            {% if calc_list == [] %}
+                <p>Hello, world!</p>
+            {% else %}
+                <div class='data'>
+                    <table>
+                        <tr>
+                            <th>
+                                Field
+                            </th>
+                            <th>
+                                Temperature(&deg;C)
+                            </th>
+                            <th>
+                                Humidity(%)
+                            </th>
+                            <th>
+                                Light(W/m&#178;)
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+                                Maximum
+                            </th>
+                            {% for i in calculations %}
+                                {% for key, value in i.items() %}
+                                    {% if "max" in key %}
+                                        <td> {{value}}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <th>
+                                Average
+                            </th>
+                            {% for i in calculations %}
+                                {% for key, value in i.items() %}
+                                    {% if "avg" in key %}
+                                        <td> {{value}}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <th>
+                                Minimum
+                            </th>
+                            {% for i in calculations %}
+                                {% for key, value in i.items() %}
+                                    {% if "min" in key %}
+                                        <td> {{value}}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </tr>
+                    </table>
+                </div>
+            {% endif %}
             <div class='data'>
                 {% if data == [] %}
                 <p>Hold on, retrieving data from the sensors!</p>
