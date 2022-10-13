@@ -47,10 +47,10 @@ def sendData(url : str):
     result = writeCSV(32)
     data = { 'sensor_id': result['sensor_id'], 'sent_time': result['time'], 'sent_temp': result['temperature'],
              'sent_humidity': result['humidity'], 'sent_light': result['light'] }
-    response = requests.post(f'http://{url}/post_data', json = data)
+    response = requests.post(url+'/post_data', json = data)
 
 def getAvg(url : str):
-    response = requests.get(f'http://{url}/average')
+    response = requests.get(url+'/average')
     data = response.json()
 
     if data == {}:
@@ -69,7 +69,8 @@ while True:
     if not url:
         url = "http://localhost:5000"
     else: 
-        url = url + ":5000"
+        url = "http://"+url+":5000"
+        # url = url+':5000'
 
     if inpt in 'sS':
         sendData(url)
