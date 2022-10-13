@@ -5,10 +5,18 @@ def sendDataFromCSV(fileName : str, url : str):
     with open(fileName, newline='') as file:
         reader = csv.DictReader(file)
         for row in reader:
-            row['sent_time'] = row.pop('time')      #format for server
-            row['sent_temp'] = row.pop('temperature')
-            row['sent_humidity'] = row.pop('humidity')
-            row['sent_light'] = row.pop('light')
+            data = {}
+            for key, value in row.items():
+                if key != 'sensor_id' and key != 'time':
+                    value = float(value)
+                data[key] = value
+                
+
+            data['sent_time'] = data.pop('time')      #format for server
+            data['sent_temp'] = data.pop('temperature')
+            data['sent_humidity'] = data.pop('humidity')
+            data['sent_light'] = data.pop('light')
+            print(data)
             response = requests.post(url, json = row)
 
 while True:
